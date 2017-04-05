@@ -2,35 +2,35 @@
 
 int main()
 {
-	ArvoreB arvore;
-	arvore.Insere(20);
-	arvore.Insere(60);
-	arvore.Insere(40);
-	arvore.Insere(80);
-	arvore.Insere(70);
-	arvore.Insere(10);
-	arvore.Insere(30);
-	arvore.Insere(15);
-	arvore.Insere(75);
-	arvore.Insere(85);
-	arvore.Insere(90);
-	bool existe = arvore.Existe(20);
-	existe = arvore.Existe(60);
-	existe = arvore.Existe(40);
-	existe = arvore.Existe(80);
-	existe = arvore.Existe(70);
-	existe = arvore.Existe(10);
-	existe = arvore.Existe(30);
-	existe = arvore.Existe(15);
-	existe = arvore.Existe(75);
-	existe = arvore.Existe(85);
-	existe = arvore.Existe(90);
+	BTree arvore;
+	arvore.Insert(20);
+	arvore.Insert(60);
+	arvore.Insert(40);
+	arvore.Insert(80);
+	arvore.Insert(70);
+	arvore.Insert(10);
+	arvore.Insert(30);
+	arvore.Insert(15);
+	arvore.Insert(75);
+	arvore.Insert(85);
+	arvore.Insert(90);
+	bool exists = arvore.Exists(20);
+	exists = arvore.Exists(60);
+	exists = arvore.Exists(40);
+	exists = arvore.Exists(80);
+	exists = arvore.Exists(70);
+	exists = arvore.Exists(10);
+	exists = arvore.Exists(30);
+	exists = arvore.Exists(15);
+	exists = arvore.Exists(75);
+	exists = arvore.Exists(85);
+	exists = arvore.Exists(90);
 	
-	existe = arvore.Existe(66);
-	existe = arvore.Existe(88);
-	existe = arvore.Existe(152);
-	existe = arvore.Existe(895);
-	existe = arvore.Existe(658);
+	exists = arvore.Exists(66);
+	exists = arvore.Exists(88);
+	exists = arvore.Exists(152);
+	exists = arvore.Exists(895);
+	exists = arvore.Exists(658);
 
 	int f = 0;
 }

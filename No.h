@@ -1,145 +1,146 @@
 using namespace std;
 
-class No
+class Node
 {
 public:
-	No() 
+	Node() 
 	{
-		Limpa();
+		Clean();
 	}
 
-	~No() 
+	~Node() 
 	{
-		Limpa();
+		Clean();
 	}
 
-	void Limpa()
+	void Clean()
 	{
-		filhos[0] = nullptr;
-		filhos[1] = nullptr;
-		filhos[2] = nullptr;
-		filhos[3] = nullptr;
-		filhos[4] = nullptr;
+		children[0] = nullptr;
+		children[1] = nullptr;
+		children[2] = nullptr;
+		children[3] = nullptr;
+		children[4] = nullptr;
 
-		valores[0] = 0;
-		valores[1] = 0;
-		valores[2] = 0;
-		valores[3] = 0;
+		values[0] = 0;
+		values[1] = 0;
+		values[2] = 0;
+		values[3] = 0;
 
-		qtdValores = 0;
+		valuesCount = 0;
 	}
 
-	bool EstaVazio()
+	bool IsEmpty()
 	{
-		return qtdValores <= 0;
+		return valuesCount <= 0;
 	}
 
-	bool EstaCheio()
+	bool IsFull()
 	{
-		return qtdValores >= 4;
+		return valuesCount >= 4;
 	}
 
-	int AdicionaValor(int iValor)
+	int AddValue(int iValor)
 	{
-		int iPosicaoRetornada = -1;
+		int iReturnPos = -1;
 
-		if(qtdValores >= 4)
-			return iPosicaoRetornada;
+		if(valuesCount >= 4)
+			return iReturnPos;
 
-		if(!qtdValores)
+		if(!valuesCount)
 		{
-			valores[0] = iValor;
-			iPosicaoRetornada = 0;
+			values[0] = iValor;
+			iReturnPos = 0;
 		}
 
-		valores[qtdValores] = iValor;
-		iPosicaoRetornada = qtdValores;
-		for(int i = qtdValores - 1; i >= 0; --i)
+		values[valuesCount] = iValor;
+		iReturnPos = valuesCount;
+		for(int i = valuesCount - 1; i >= 0; --i)
 		{
-			if(iValor < valores[i])
+			if(iValor < values[i])
 			{
-				int temp = valores[i];
-				valores[i] = iValor;
-				valores[iPosicaoRetornada] = temp;
-				No* temp2 = filhos[i];
-				No* temp3 = filhos[i+1];
-				filhos[i] = nullptr;
-				filhos[i+1] = nullptr;
-				filhos[iPosicaoRetornada] = temp2;
-				filhos[iPosicaoRetornada+1] = temp3;
-				iPosicaoRetornada = i;
+				int temp = values[i];
+				values[i] = iValor;
+				values[iReturnPos] = temp;
+				Node* temp2 = children[i];
+				Node* temp3 = children[i+1];
+				children[i] = nullptr;
+				children[i+1] = nullptr;
+				children[iReturnPos] = temp2;
+				children[iReturnPos+1] = temp3;
+				iReturnPos = i;
 			}
 		}
 
-		++qtdValores;
-		return iPosicaoRetornada;
+		++valuesCount;
+		return iReturnPos;
 	}
 
-	void RemoveValor(int idx)
+	void RemoveValue(int idx)
 	{
 		if(idx >= 4)
 			return;
 
-		bool bRealocar = false;
-		for(int i = 0; i < qtdValores; ++i)
+		bool bReallocate = false;
+		for(int i = 0; i < valuesCount; ++i)
 		{
-			if(bRealocar)
+			if (bReallocate)
 			{
-				valores[i-1] = valores[i];
-				filhos[i-1] = filhos[i];
-				filhos[i] = filhos[i+1];
+				values[i-1] = values[i];
+				children[i-1] = children[i];
+				children[i] = children[i+1];
 			}
-			else
-				if(i == idx)
-					bRealocar = true;
+			else if (i == idx)
+			{
+				bReallocate = true;
+			}
 		}
 
-		--qtdValores;
+		--valuesCount;
 	}
 
-	int GetIdxMaiorValor()
+	int GetMaxValueIdx()
 	{
-		return (qtdValores - 1);
+		return (valuesCount - 1);
 	}
 
-	int GetQuantidadeValores()
+	int GetValuesCount()
 	{
-		return qtdValores;
+		return valuesCount;
 	}
 
-	bool TemFilhos()
+	bool HasChildren()
 	{
-		return (filhos[0] || filhos[1] || filhos[2] || filhos[3] || filhos[4]);
+		return (children[0] || children[1] || children[2] || children[3] || children[4]);
 	}
 
-	int GetValor(int idx)
+	int GetValue(int idx)
 	{
-		return valores[idx];
+		return values[idx];
 	}
 
-	void SetFilho(int idx, No* filho)
+	void SetChild(int idx, Node* filho)
 	{
-		filhos[idx] = filho;
+		children[idx] = filho;
 	}
 
-	No* GetFilho(int idx)
+	Node* GetChild(int idx)
 	{
 		if(idx > 4)
 			return nullptr;
 
-		return filhos[idx];
+		return children[idx];
 	}
 
 private:
-	int valores[4];
-	No* filhos[5];
-	int qtdValores;
+	int values[4];
+	Node* children[5];
+	int valuesCount;
 };
 
-struct PARTICIONADO{
+struct PARTITIONED{
 	int infos[5];
 
-	PARTICIONADO(){
+	PARTITIONED(){
 		infos[0] = 0;
 		infos[1] = 0;
 		infos[2] = 0;
@@ -148,79 +149,79 @@ struct PARTICIONADO{
 	}
 };
 
-struct NODO_EXATO
+struct EXACT_NODE
 {
-	No* nodo;
-	int iPosicao;
+	Node* node;
+	int iPosition;
 
-	NODO_EXATO()
+	EXACT_NODE()
 	{
-		nodo = nullptr;
-		iPosicao = -1;
+		node = nullptr;
+		iPosition = -1;
 	}
 
-	bool NODO_EXATO::EhValido()
+	bool EXACT_NODE::IsValid()
 	{
-		return (nodo != nullptr && iPosicao >= 0);
+		return (node != nullptr && iPosition >= 0);
 	}
 
-	No* GetFilhoEsquerda()
+	Node* GetLeftChild()
 	{
-		if(!nodo)
+		if(!node)
 			return nullptr;
 
-		return nodo->GetFilho(iPosicao);
+		return node->GetChild(iPosition);
 	}
 
-	No* GetFilhoDireita()
+	Node* GetRightChild()
 	{
-		if(!nodo || iPosicao >= 4)
+		if(!node || iPosition >= 4)
 			return nullptr;
 
-		return nodo->GetFilho(iPosicao + 1);
+		return node->GetChild(iPosition + 1);
 	}
 
-	int GetValor()
+	int GetValue()
 	{
-		if(!nodo)
+		if(!node)
 			return 0;
 
-		return nodo->GetValor(iPosicao);
+		return node->GetValue(iPosition);
 	}
 };
 
-class ArvoreB
+class BTree
 {
 public:
-	ArvoreB()
+	BTree()
 	{
-		m_pRaiz = nullptr;
+		m_pRoot = nullptr;
 	}
 
-	~ArvoreB() {}
+	~BTree() {}
 
-	void Insere(int info)
+	void Insert(int info)
 	{
-		NODO_EXATO no;
-		InsereRec(info, no);
+		EXACT_NODE no;
+		InsertRec(info, no);
 	}
 
-	NODO_EXATO GetNoInfo(int info)
+	EXACT_NODE GetNodeInfo(int info)
 	{
-		return GetNoInfo(m_pRaiz, info);
+		return GetNodeInfo(m_pRoot, info);
 	}
 
-	bool Existe(int info)
+	bool Exists(int info)
 	{
-		return ExisteRec(m_pRaiz, info);
+		return ExistsRec(m_pRoot, info);
 	}
 
 	void Remove(int info)
 	{
-		NODO_EXATO nodoExato = GetNoInfo(info);
+		EXACT_NODE exactNode = GetNodeInfo(info);
 
-		if(!nodoExato.GetFilhoEsquerda() && !nodoExato.GetFilhoDireita())
-			nodoExato.nodo->RemoveValor(nodoExato.iPosicao);
+		if(!exactNode.GetLeftChild() && !exactNode.GetRightChild())
+			exactNode.node->RemoveValue(exactNode.iPosition);
 		else
 		{
 
@@ -228,173 +229,173 @@ public:
 	}
 
 private:
-	NODO_EXATO InsereRec(int info, NODO_EXATO nodoPos)
+	EXACT_NODE InsertRec(int info, EXACT_NODE nodoPos)
 	{
-		NODO_EXATO nodoRetorno;
-		No* pAnterior = nullptr;
-		No* pTemp;
+		EXACT_NODE exactNode;
+		Node* pPrevious = nullptr;
+		Node* pTemp;
 
-		if(nodoPos.EhValido())
+		if(nodoPos.IsValid())
 		{
-			if(nodoPos.GetFilhoEsquerda() == nullptr)
+			if(nodoPos.GetLeftChild() == nullptr)
 			{
-				No* filhoNovo = new No;
-				nodoRetorno.iPosicao = filhoNovo->AdicionaValor(info);
-				nodoRetorno.nodo = filhoNovo;
-				nodoPos.nodo->SetFilho(nodoPos.iPosicao, filhoNovo);
-				return nodoRetorno;
+				Node* newChild = new Node;
+				exactNode.iPosition = newChild->AddValue(info);
+				exactNode.node = newChild;
+				nodoPos.node->SetChild(nodoPos.iPosition, newChild);
+				return exactNode;
 			}
 
-			if(nodoPos.GetFilhoEsquerda()->EstaVazio())
+			if(nodoPos.GetLeftChild()->IsEmpty())
 			{
-				No* filhoNovo = new No;
-				nodoRetorno.iPosicao = filhoNovo->AdicionaValor(info);
-				nodoRetorno.nodo = filhoNovo;
-				nodoPos.nodo->SetFilho(nodoPos.iPosicao, filhoNovo);
-				return nodoRetorno;
+				Node* newChild = new Node;
+				exactNode.iPosition = newChild->AddValue(info);
+				exactNode.node = newChild;
+				nodoPos.node->SetChild(nodoPos.iPosition, newChild);
+				return exactNode;
 			}
 
-			pTemp = nodoPos.GetFilhoEsquerda();
+			pTemp = nodoPos.GetLeftChild();
 		}
 		else
 		{
-			if(nodoPos.nodo)
+			if(nodoPos.node)
 			{
-				pTemp = nodoPos.nodo;
+				pTemp = nodoPos.node;
 
-				if(pTemp->EstaCheio())
+				if(pTemp->IsFull())
 				{
-					PARTICIONADO part = Particiona(info, pTemp);
-					pTemp->Limpa();
-					NODO_EXATO nodoExato;
-					nodoExato.nodo = pAnterior;
-					nodoExato = InsereRec(part.infos[0], nodoExato);
-					InsereRec(part.infos[1], nodoExato);
-					InsereRec(part.infos[2], nodoExato);
-					nodoExato.iPosicao += 1;
-					InsereRec(part.infos[3], nodoExato);
-					InsereRec(part.infos[4], nodoExato);
+					PARTITIONED part = Partition(info, pTemp);
+					pTemp->Clean();
+					EXACT_NODE exactNode;
+					exactNode.node = pPrevious;
+					exactNode = InsertRec(part.infos[0], exactNode);
+					InsertRec(part.infos[1], exactNode);
+					InsertRec(part.infos[2], exactNode);
+					exactNode.iPosition += 1;
+					InsertRec(part.infos[3], exactNode);
+					InsertRec(part.infos[4], exactNode);
 				}
 				else
 				{
-					nodoRetorno.iPosicao = pTemp->AdicionaValor(info);
-					nodoRetorno.nodo = pTemp;
-					return nodoRetorno;
+					exactNode.iPosition = pTemp->AddValue(info);
+					exactNode.node = pTemp;
+					return exactNode;
 				}
 			}
 			else
 			{
-				if(m_pRaiz == nullptr)
+				if(m_pRoot == nullptr)
 				{
-					m_pRaiz = new No;
-					nodoRetorno.iPosicao = m_pRaiz->AdicionaValor(info);
-					nodoRetorno.nodo = m_pRaiz;
-					return nodoRetorno;
+					m_pRoot = new Node;
+					exactNode.iPosition = m_pRoot->AddValue(info);
+					exactNode.node = m_pRoot;
+					return exactNode;
 				}
 
-				if(m_pRaiz->EstaVazio())
+				if(m_pRoot->IsEmpty())
 				{
-					m_pRaiz = new No;
-					nodoRetorno.iPosicao = m_pRaiz->AdicionaValor(info);
-					nodoRetorno.nodo = m_pRaiz;
-					return nodoRetorno;
+					m_pRoot = new Node;
+					exactNode.iPosition = m_pRoot->AddValue(info);
+					exactNode.node = m_pRoot;
+					return exactNode;
 				}
 
-				pTemp = m_pRaiz;
+				pTemp = m_pRoot;
 			}
 		}
 
 		while(pTemp != nullptr)
 		{
-			if(pTemp->TemFilhos())
+			if(pTemp->HasChildren())
 			{
-				for(int i = 0; i < pTemp->GetQuantidadeValores(); ++i)
+				for(int i = 0; i < pTemp->GetValuesCount(); ++i)
 				{
-					if(info < pTemp->GetValor(i))
+					if(info < pTemp->GetValue(i))
 					{
-						pAnterior = pTemp;
-						pTemp = pTemp->GetFilho(i);
+						pPrevious = pTemp;
+						pTemp = pTemp->GetChild(i);
 						break;
 					}
 					else 
-						if(i == pTemp->GetQuantidadeValores() - 1)
+						if(i == pTemp->GetValuesCount() - 1)
 						{
-							pAnterior = pTemp;
-							pTemp = pTemp->GetFilho(i+1);
+							pPrevious = pTemp;
+							pTemp = pTemp->GetChild(i+1);
 							break;
 						}
 				}
 
 				if(!pTemp)
 				{
-					pTemp = new No();
-					nodoRetorno.iPosicao = pTemp->AdicionaValor(info);
-					nodoRetorno.nodo = pTemp;
-					return nodoRetorno;
+					pTemp = new Node();
+					exactNode.iPosition = pTemp->AddValue(info);
+					exactNode.node = pTemp;
+					return exactNode;
 				}
 
-				if(pTemp->EstaVazio())
+				if(pTemp->IsEmpty())
 				{
-					pTemp = new No();
-					nodoRetorno.iPosicao = pTemp->AdicionaValor(info);
-					nodoRetorno.nodo = pTemp;
-					return nodoRetorno;
+					pTemp = new Node();
+					exactNode.iPosition = pTemp->AddValue(info);
+					exactNode.node = pTemp;
+					return exactNode;
 				}
 			}
 			else 
 			{
-				if(pTemp->EstaCheio())
+				if(pTemp->IsFull())
 				{
-					PARTICIONADO part = Particiona(info, pTemp);
-					pTemp->Limpa();
-					NODO_EXATO nodoExato;
-					nodoExato.nodo = pAnterior;
-					nodoExato = InsereRec(part.infos[0], nodoExato);
-					InsereRec(part.infos[1], nodoExato);
-					InsereRec(part.infos[2], nodoExato);
-					nodoExato.iPosicao += 1;
-					InsereRec(part.infos[3], nodoExato);
-					InsereRec(part.infos[4], nodoExato);
+					PARTITIONED part = Partition(info, pTemp);
+					pTemp->Clean();
+					EXACT_NODE exactNode;
+					exactNode.node = pPrevious;
+					exactNode = InsertRec(part.infos[0], exactNode);
+					InsertRec(part.infos[1], exactNode);
+					InsertRec(part.infos[2], exactNode);
+					exactNode.iPosition += 1;
+					InsertRec(part.infos[3], exactNode);
+					InsertRec(part.infos[4], exactNode);
 				}
 				else
 				{
-					nodoRetorno.iPosicao = pTemp->AdicionaValor(info);
-					nodoRetorno.nodo = pTemp;
-					return nodoRetorno;
+					exactNode.iPosition = pTemp->AddValue(info);
+					exactNode.node = pTemp;
+					return exactNode;
 				}
 			}
 		}
 
-		return nodoRetorno;
+		return exactNode;
 	}
 
-	PARTICIONADO Particiona(int info, No* no)
+	PARTITIONED Partition(int info, Node* no)
 	{
-		PARTICIONADO part;
+		PARTITIONED part;
 
 		if(!no)
 			return part;
 
 		int temp[5];
-		bool jainseriuinfo = false;
+		bool infoAlreadyAdded = false;
 
 		for(int i = 0, j = 0; i < 5 && j < 4; ++i, ++j)
 		{
-			if(!jainseriuinfo)
+			if(!infoAlreadyAdded)
 			{
-				if(info < no->GetValor(j))
+				if(info < no->GetValue(j))
 				{
 					temp[i] = info;
 					--j;
-					jainseriuinfo = true;
+					infoAlreadyAdded = true;
 					continue;
 				}
 			}
 
-			if(!jainseriuinfo)
+			if(!infoAlreadyAdded)
 				temp[4] = info;
 
-			temp[i] = no->GetValor(j);
+			temp[i] = no->GetValue(j);
 		}
 
 		part.infos[0] = temp[2];
@@ -406,24 +407,24 @@ private:
 		return part;
 	}
 
-	bool ExisteRec(No* no, int info)
+	bool ExistsRec(Node* no, int info)
 	{
 		while(no != nullptr)
 		{
-			for(int i = 0; i < no->GetQuantidadeValores(); ++i)
+			for(int i = 0; i < no->GetValuesCount(); ++i)
 			{
-				if(info == no->GetValor(i))
+				if(info == no->GetValue(i))
 					return true;
 
-				if(info < no->GetValor(i))
+				if(info < no->GetValue(i))
 				{
-					no = no->GetFilho(i);
+					no = no->GetChild(i);
 					break;
 				}
 				else
-					if(i == no->GetQuantidadeValores() - 1)
+					if(i == no->GetValuesCount() - 1)
 					{
-						no = no->GetFilho(i+1);
+						no = no->GetChild(i+1);
 						break;
 					}
 			}
@@ -432,48 +433,47 @@ private:
 		return false;
 	}
 
-	NODO_EXATO GetNoInfo(No* no, int info)
+	EXACT_NODE GetNodeInfo(Node* node, int info)
 	{
-		NODO_EXATO retorno;
+		EXACT_NODE exactNode;
 
-		while(no != nullptr)
+		while(node != nullptr)
 		{
-			for(int i = 0; i < no->GetQuantidadeValores(); ++i)
+			for(int i = 0; i < node->GetValuesCount(); ++i)
 			{
-				if(info == no->GetValor(i))
+				if(info == node->GetValue(i))
 				{
-					retorno.iPosicao = i;
-					retorno.nodo = no;
-					return retorno;
+					exactNode.iPosition = i;
+					exactNode.node = node;
+					return exactNode;
 				}
 
-				if(info < no->GetValor(i))
+				if(info < node->GetValue(i))
 				{
-					no = no->GetFilho(i);
+					node = node->GetChild(i);
 					break;
 				}
-				else
-					if(i == no->GetQuantidadeValores() - 1)
-					{
-						no = no->GetFilho(i+1);
-						break;
-					}
+				else if (i == node->GetValuesCount() - 1)
+				{
+					node = node->GetChild(i+1);
+					break;
+				}
 			}
 		}
 
-		return retorno;
+		return exactNode;
 	}
 	
-	NODO_EXATO GetMaior(No* no)
+	EXACT_NODE GetMax(Node* no)
 	{
 		while(no)
 		{
-			int idx = no->GetIdxMaiorValor();
-			if(no->GetFilho(idx + 1))
-				no = no->GetFilho(idx + 1);
+			int idx = no->GetMaxValueIdx();
+			if(no->GetChild(idx + 1))
+				no = no->GetChild(idx + 1);
 		}
 	}
 
-	No* m_pRaiz;
+	Node* m_pRoot;
 };
 
